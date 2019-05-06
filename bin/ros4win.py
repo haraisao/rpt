@@ -87,13 +87,16 @@ def check_md5_file(h_val, fname):
 #
 #
 def download_package_hash(fname, path):
-  info=get_pkg_info_from_yaml(fname)
-  if not info: return None
-  ffname=os.path.basename(info['filename'])
-  if path:  ffname=path+"\\"+ffname  
-  if check_md5_file(info['MD5sum'], ffname):
-    return os.path.basename(info['filename'])
-  return None
+  try:
+    info=get_pkg_info_from_yaml(fname)
+    if not info: return None
+    ffname=os.path.basename(info['filename'])
+    if path:  ffname=path+"\\"+ffname  
+    if check_md5_file(info['MD5sum'], ffname):
+      return os.path.basename(info['filename'])
+    return None
+  except:
+    return None
 
 def download_package_file(fname, path=""):
   if not os.path.exists(path) : os.makedirs(path)

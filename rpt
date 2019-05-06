@@ -105,7 +105,7 @@ cmds.append(list)
 #
 def check_update():
   drv = getArgCwd(2)
-  update_list()
+  update()
   lst=package_list(drv)
   lst_pkg=r4w.load_pkg_hash()
 
@@ -157,8 +157,8 @@ cmds.append(remove)
 
 #
 #
-def update():
-  r4w.download_package_file("list", "__pkg__")
+def update(pkg_dir="__pkg__"):
+  r4w.download_package_file("list", pkg_dir)
   print("....Upated")
 cmds.append(update)
 
