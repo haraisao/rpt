@@ -8,7 +8,7 @@ signal.signal(signal.SIGINT, signal.SIG_DFL)
 cmds=[]
 
 #
-#
+# 
 def getArgCwd(n):
   if len(sys.argv) > n: res=sys.argv[n]
   else: res=os.getcwd()[:2]
@@ -263,6 +263,8 @@ def search(path=""):
     print("No such package", name)
 cmds.append(search)
 
+#
+#
 cmds_str=[x.__name__ for x in cmds]
 
 usage="Usage: %s cmd [arg1 arg2 ...]\n" % os.path.basename(sys.argv[0])

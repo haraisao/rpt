@@ -1,6 +1,6 @@
-# rpt (Package tool for Ros4Win)
+# rpt (Ros4Win Package Tool)
 
-This software is a package management tool for Ros4Win.
+The 'rpt' is a package management tool for Ros4Win.
 This tool give the package management features such as download and install packages, update and remove files.
 
 ## Quick Start
