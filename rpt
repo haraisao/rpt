@@ -97,7 +97,8 @@ def package_list(drv):
 def list():
   drv = getArgCwd(2)
   lst=package_list(drv)
-  print(lst)
+  for x in lst:
+    print(x)
   return lst
 cmds.append(list)
 
@@ -248,6 +249,19 @@ def get_pkg(path=""):
       r4w.download_package_file(n, path)
 cmds.append(get_pkg)
 
+#
+#
+def search(path=""):
+  name=sys.argv[2]
+  lst=r4w.load_pkg_list()
+  try:
+    for x in lst:
+      if name in x or name in lst[x]['description']:
+        print("\n"+x+":")
+        print("   "+lst[x]['description'])
+  except:
+    print("No such package", name)
+cmds.append(search)
 
 cmds_str=[x.__name__ for x in cmds]
 
