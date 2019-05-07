@@ -16,6 +16,11 @@ import shutil
 import signal
 import yaml
 import re
+import colorama
+from colorama import Fore, Back, Style
+import ros4win as r4w
+
+colorama.init(autoreset=True)
 
 PKG_LIST=['ros_base', 'ros_desktop', 'control', 'plan', 'navigation', 'robot']
 LIB_LIST=['local', 'setup']
@@ -27,6 +32,8 @@ PKG_MGR_DIR="/opt/_pkgmgr"
 PKG_DB="ros4win.db"
 
 PKG_REPO_BASE="http://hara.jpn.com/cgi/"
+
+PKG_MGR_DB="/opt/_pkgmgr/ros4win.db"
 
 _mon=['-', '\\', '|', '/']
 _mon_dot=['   ', '.  ', '.. ', '...', ' ..', '  .']

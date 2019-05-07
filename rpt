@@ -2,13 +2,12 @@
 #
 import sys,os
 import signal
-import colorama
-from colorama import Fore, Back, Style
 import ros4win as r4w
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
-colorama.init(autoreset=True)
 cmds=[]
+
+
 
 #
 # 
@@ -88,7 +87,7 @@ cmds.append(pkgname)
 #
 #
 def package_list(drv):
-  dbname=drv+"/opt/_pkgmgr/ros4win.db"
+  dbname=drv+r4w.PKG_MGR_DB
   res=r4w.select_pkg_data('all', dbname)
   lst={}
   for x in res:
@@ -121,6 +120,7 @@ def check_update():
   print(" %d updates..." % len(res)) 
 cmds.append(check_update)
 
+#
 def upgrade():
   drv = getArgCwd(2)
   lst=package_list(drv)
@@ -260,7 +260,7 @@ def search(path=""):
   try:
     for x in lst:
       if name in x or name in lst[x]['description']:
-        print(Fore.GREEN + "\n"+ x +":")
+        print(r4w.Fore.GREEN + "\n"+ x +":")
         print("      "+lst[x]['description'].strip())
   except:
     print("No such package", name)
