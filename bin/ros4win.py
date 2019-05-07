@@ -36,13 +36,22 @@ PKG_REPO_BASE="http://hara.jpn.com/cgi/"
 PKG_MGR_DB="/opt/_pkgmgr/ros4win.db"
 
 _mon=['-', '\\', '|', '/']
+_mon2=['| ', ' ~', ' |', '_ ']
 _mon_dot=['   ', '.  ', '.. ', '...', ' ..', '  .']
+_mon_dot2=['    ', '>   ', '>>  ', '>>> ', '>>>>', ' >>>' '  >>', '   >']
 
 def getMonChar(n):
   return _mon[ n % 4 ]
 
+def getMonChar2(n):
+  return _mon2[ n % 4 ]
+
 def getMonDots(n):
   return _mon_dot[ n % 6 ]
+
+def getMonDots2(n):
+  return _mon_dot2[ n % 8 ]
+
 
 #######
 # Remote
