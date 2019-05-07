@@ -260,7 +260,7 @@ def search(path=""):
   try:
     for x in lst:
       if name in x or name in lst[x]['description']:
-        print("\n"+ Fore.GREEN+x+":")
+        print(Fore.GREEN + "\n"+ x +":")
         print("      "+lst[x]['description'].strip())
   except:
     print("No such package", name)
