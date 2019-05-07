@@ -2,9 +2,12 @@
 #
 import sys,os
 import signal
+import colorama
+from colorama import Fore, Back, Style
 import ros4win as r4w
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
+colorama.init(autoreset=True)
 cmds=[]
 
 #
@@ -257,8 +260,8 @@ def search(path=""):
   try:
     for x in lst:
       if name in x or name in lst[x]['description']:
-        print("\n\033[31m"+x+":\033[0m")
-        print("   "+lst[x]['description'].strip())
+        print("\n"+ Fore.GREEN+x+":")
+        print("      "+lst[x]['description'].strip())
   except:
     print("No such package", name)
 cmds.append(search)
