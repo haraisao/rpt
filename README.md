@@ -10,5 +10,6 @@ To install ros_base to the drive 'D:',
  > git clone https://github.com/haraisao/rpt
  > cd rpt
  > rpt update
- > rpt install ros_base
+ > rpt install ros_base [or desktop]
+ > rpt install setup
 ```
