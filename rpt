@@ -22,7 +22,7 @@ def install_pkg():
   name = sys.argv[2]
   drv = getArgCwd(3)
   r4w.install_package_all(name, drv)
-cmds.append(install_pkg)
+#cmds.append(install_pkg)
 
 #
 #
@@ -30,7 +30,7 @@ def inst():
   name = sys.argv[2]
   drv = getArgCwd(3)
   r4w.install_package(name, drv, False, True)
-cmds.append(inst)
+#cmds.append(inst)
 
 #
 #
@@ -39,7 +39,7 @@ def get_hash():
   res=r4w.get_hash_value(file_name)
 
   print(os.path.basename(file_name), res)
-cmds.append(get_hash)
+#cmds.append(get_hash)
 
 #
 #
@@ -48,7 +48,7 @@ def installed_pkgs():
   res=r4w.get_installed_pkgs(drv)
   for x in res:
     print(x)
-cmds.append(installed_pkgs)
+#cmds.append(installed_pkgs)
 
 #
 #
@@ -59,7 +59,7 @@ def installed_files():
   res=r4w.select_install_info(name, dbname)
   for x in res:
     print(x)
-cmds.append(installed_files)
+#cmds.append(installed_files)
 
 #
 #
@@ -67,7 +67,7 @@ def pkg_dep():
   pkg_name=sys.argv[2]
   res=r4w.get_pkg_dep(pkg_name)
   print(res)
-cmds.append(pkg_dep)
+#cmds.append(pkg_dep)
 
 #
 #
@@ -75,14 +75,14 @@ def pkg_list():
   pkg_name=sys.argv[2]
   res=r4w.get_pkg_list(pkg_name)
   print(res)
-cmds.append(pkg_dep)
+#cmds.append(pkg_list)
 
 #
 #
 def pkgname():
   file_name=sys.argv[2]
   print(r4w.file_to_pkgname( file_name ).split(','))
-cmds.append(pkgname)
+#cmds.append(pkgname)
 
 #
 #
@@ -172,7 +172,7 @@ cmds.append(remove)
 def update_cache(pkg_dir="__pkg__"):
   r4w.download_package_file("list", pkg_dir)
   #print("....Upated")
-cmds.append(update_cache)
+#cmds.append(update_cache)
 
 #
 #
@@ -180,7 +180,7 @@ def download(name="", path="ros_pkg"):
   if not name : name=sys.argv[2]
   if len(sys.argv) > 3:  path=sys.argv[3]
   return r4w.download_package_file(name, path)
-cmds.append(download)
+#cmds.append(download)
 
 #
 #
@@ -206,7 +206,7 @@ def download_all(path="ros_pkg"):
       pass
     count += 1
   return files
-cmds.append(download_all)
+#cmds.append(download_all)
 
 #
 #
@@ -243,7 +243,7 @@ def all_package():
   print("Package:", ",".join(pkg))
   print()
   print("No package:", ",".join(no_pkg))
-cmds.append(all_package)
+#cmds.append(all_package)
 
 #
 #
@@ -258,7 +258,7 @@ def get_pkg(path=""):
         r4w.get_pkgs(list(res.keys()), path)
     else:
       r4w.download_package_file(n, path)
-cmds.append(get_pkg)
+#cmds.append(get_pkg)
 
 #
 #
