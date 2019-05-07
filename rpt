@@ -111,18 +111,21 @@ cmds.append(list)
 def update():
   drv = getArgCwd(2)
   update_cache()
-  lst=package_list(drv)
-  lst_pkg=r4w.load_pkg_hash()
+  try:
+    lst=package_list(drv)
+    lst_pkg=r4w.load_pkg_hash()
 
-  res=[]
-  for x in lst:
-    if lst_pkg[x] != lst[x]:
-      res.append(x)
-  if len(res):
-    print("[%s]" % ",".join(res))
-    print(" %d updates..." % len(res))
-  else:
-    print("No update") 
+    res=[]
+    for x in lst:
+      if lst_pkg[x] != lst[x]:
+        res.append(x)
+    if len(res):
+      print("[%s]" % ",".join(res))
+      print(" %d updates..." % len(res))
+    else:
+      print("No update")
+  except:
+    print("Update package list")
 cmds.append(update)
 
 #
