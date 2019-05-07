@@ -23,7 +23,7 @@ import ros4win as r4w
 colorama.init(autoreset=True)
 
 PKG_LIST=['ros_base', 'ros_desktop', 'control', 'plan', 'navigation', 'robot']
-LIB_LIST=['local', 'setup']
+LIB_LIST=['local', 'local-contrib', 'python', 'setup']
 PKG_BASE_DIR="ros_pkg/"
 PKG_PREFIX="ros-melodic-"
 PKG_EXT=".tgz"
@@ -300,7 +300,8 @@ def pkgname_matching_pattern(name, exact=False):
 ######################
 #  for table 'package'
 #
-def insert_pkg_data(name, fname, h_val=None, dbname=PKG_DB):
+def insert_pkg_data(name, fname, h_val=None, dbname=None):
+  if dbname is None: dbname=default_pkgmgr_db()
   create_db_table('packages', 'name text, fname text, run_dep text, lib_dep text, h_val text, uptime timestamp', dbname)
 
   with closing(sqlite3.connect(dbname)) as conn:
@@ -321,8 +322,9 @@ def insert_pkg_data(name, fname, h_val=None, dbname=PKG_DB):
     conn.close()
 #
 #
-def select_pkg_data(name, dbname=PKG_DB):
+def select_pkg_data(name, dbname=None):
   res=[]
+  if dbname is None: dbname=default_pkgmgr_db()
   with closing(sqlite3.connect(dbname)) as conn:
     c = conn.cursor()
     if name == 'all':
@@ -336,8 +338,9 @@ def select_pkg_data(name, dbname=PKG_DB):
 
 #
 #
-def get_hash_valeu_from_db(name, dbname=PKG_DB):
+def get_hash_valeu_from_db(name, dbname=None):
   res=[]
+  if dbname is None: dbname=default_pkgmgr_db()
   with closing(sqlite3.connect(dbname)) as conn:
     c = conn.cursor()
     sql = "select h_val from packages where %s" % pkgname_matching_pattern(name)
@@ -347,7 +350,8 @@ def get_hash_valeu_from_db(name, dbname=PKG_DB):
   return res[0]
 #
 #
-def delete_pkg_data(name, dbname=PKG_DB):
+def delete_pkg_data(name, dbname=None):
+  if dbname is None: dbname=default_pkgmgr_db()
   sql="delete from packages where %s" % pkgname_matching_pattern(name)
   try:
     res=exec_sql(sql, dbname)
@@ -358,7 +362,8 @@ def delete_pkg_data(name, dbname=PKG_DB):
 #############################
 #  for table 'install_info'
 #
-def insert_install_info(dbname, pkgname, fname):
+def insert_install_info(pkgname, fname, dbname=None):
+  if dbname is None: dbname=default_pkgmgr_db()
   create_db_table('install_info', "name text, path text, uptime timestamp", dbname)
 
   with closing(sqlite3.connect(dbname)) as conn:
@@ -372,7 +377,8 @@ def insert_install_info(dbname, pkgname, fname):
 
 #
 #
-def select_install_info(name, dbname):
+def select_install_info(name, dbname=None):
+  if dbname is None: dbname=default_pkgmgr_db()
   sql="select * from install_info where %s;" % pkgname_matching_pattern(name)
   try:
     res=exec_sql(sql, dbname)
@@ -382,7 +388,8 @@ def select_install_info(name, dbname):
 
 #
 #
-def delete_install_info(name, dbname):
+def delete_install_info(name, dbname=None):
+  if dbname is None: dbname=default_pkgmgr_db()
   sql="delete from install_info where %s;" % pkgname_matching_pattern(name)
   try:
     res=exec_sql(sql, dbname)
@@ -391,7 +398,8 @@ def delete_install_info(name, dbname):
     return False
 #
 #
-def select_install_info_name(dbname):
+def select_install_info_name(dbname=None):
+  if dbname is None: dbname=default_pkgmgr_db()
   sql="select distinct name from install_info;"
   try:
     res=exec_sql(sql, dbname)
@@ -424,7 +432,7 @@ def untar(fname, to_dir, num=10, db=None):
       try:
         arc.extract(members[i], path=to_dir)
         if db:
-          insert_install_info(dbname, pkgname, to_dir[2:]+"\\"+members[i])
+          insert_install_info(pkgname, to_dir[2:]+"\\"+members[i], dbname)
       except:
         print("===Fail to extract===", members[i])
           

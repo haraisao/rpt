@@ -87,7 +87,7 @@ cmds.append(pkgname)
 #
 #
 def package_list(drv):
-  dbname=drv+r4w.PKG_MGR_DB
+  dbname=r4w.default_pkgmgr_db(drv)
   res=r4w.select_pkg_data('all', dbname)
   lst={}
   for x in res:
@@ -99,8 +99,10 @@ def package_list(drv):
 def list():
   drv = getArgCwd(2)
   lst=package_list(drv)
+  lst=sorted(lst.items())
+
   for x in lst:
-    print(x)
+    print("   - "+x[0])
   return lst
 cmds.append(list)
 
