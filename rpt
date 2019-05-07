@@ -98,12 +98,16 @@ def package_list(drv):
 #
 def list():
   drv = getArgCwd(2)
-  lst=package_list(drv)
-  lst=sorted(lst.items())
+  try:
+    lst=package_list(drv)
+    lst=sorted(lst.items())
 
-  for x in lst:
-    print("   - "+x[0])
-  return lst
+    for x in lst:
+      print("   - "+x[0])
+    return lst
+  except:
+    print("No package")
+    return []
 cmds.append(list)
 
 #
