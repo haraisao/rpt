@@ -108,9 +108,9 @@ cmds.append(list)
 
 #
 #
-def check_update():
+def update():
   drv = getArgCwd(2)
-  update()
+  update_cache()
   lst=package_list(drv)
   lst_pkg=r4w.load_pkg_hash()
 
@@ -118,9 +118,12 @@ def check_update():
   for x in lst:
     if lst_pkg[x] != lst[x]:
       res.append(x)
-  print("[%s]" % ",".join(res))
-  print(" %d updates..." % len(res)) 
-cmds.append(check_update)
+  if len(res):
+    print("[%s]" % ",".join(res))
+    print(" %d updates..." % len(res))
+  else:
+    print("No update") 
+cmds.append(update)
 
 #
 def upgrade():
@@ -163,10 +166,10 @@ cmds.append(remove)
 
 #
 #
-def update(pkg_dir="__pkg__"):
+def update_cache(pkg_dir="__pkg__"):
   r4w.download_package_file("list", pkg_dir)
-  print("....Upated")
-cmds.append(update)
+  #print("....Upated")
+cmds.append(update_cache)
 
 #
 #
