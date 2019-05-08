@@ -172,7 +172,7 @@ cmds.append(remove)
 #
 #
 def update_cache(pkg_dir=None):
-  if pkg_dir is None:  pkg_dir=__file__+"\\__pkg__"
+  if pkg_dir is None:  pkg_dir=os.path.dirname(__file__)+"\\__pkg__"
   r4w.download_package_file("list", pkg_dir)
   #print("....Upated")
 #cmds.append(update_cache)
@@ -180,7 +180,7 @@ def update_cache(pkg_dir=None):
 #
 #
 def download(name="", path=None):
-  if path is None:  path =__file__+"\\ros_pkg"
+  if path is None:  path =os.path.dirname(__file__)+"\\ros_pkg"
   if not name : name=sys.argv[2]
   if len(sys.argv) > 3:  path=sys.argv[3]
   return r4w.download_package_file(name, path)
@@ -189,7 +189,7 @@ def download(name="", path=None):
 #
 #
 def download_all(path=None):
-  if path is None:  path =__file__+"\\ros_pkg"
+  if path is None:  path =os.path.dirname(__file__)+"\\ros_pkg"
   name=sys.argv[2]
   if len(sys.argv) > 3:  path=sys.argv[3]
 
@@ -216,7 +216,7 @@ def download_all(path=None):
 #
 #
 def install(path=None):
-  if path is None:  path =__file__+"\\ros_pkg"
+  if path is None:  path =os.path.dirname(__file__)+"\\ros_pkg"
   files=download_all(path)
   print("Finish downloading files....")
   n=len(files)
@@ -293,7 +293,6 @@ usage+= "   cmd: "+", ".join(cmds_str)
 #
 import traceback
 if __name__ == '__main__':
-  print(__file__)
   if len(sys.argv) < 2:
     print(usage)
     sys.exit()
