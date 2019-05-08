@@ -153,7 +153,7 @@ def upgrade():
     files=[]
     path="ros_pkg"
     for name in res:
-      f=r4w.download_package_file(name, path)
+      f=r4w.download_package_file(name.split(',')[0], path)
       files.append(f)
 
     for f in files:
