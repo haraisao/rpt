@@ -120,7 +120,7 @@ def update():
     res=[]
     for x in lst:
       if lst_pkg[x] != lst[x]:
-        res.append(x)
+        res.append(x.split(',')[0])
     if len(res):
       print("[%s]" % ",".join(res))
       print(" %d updates..." % len(res))
@@ -139,7 +139,7 @@ def upgrade():
   res=[]
   for x in lst:
     if lst_pkg[x] != lst[x]:
-      res.append(x)
+      res.append(x.split(',')[0])
   if len(res) == 0 :
     print("No upgradable package")
     return
@@ -153,7 +153,7 @@ def upgrade():
     files=[]
     path="ros_pkg"
     for name in res:
-      f=r4w.download_package_file(name.split(',')[0], path)
+      f=r4w.download_package_file(name, path)
       files.append(f)
 
     for f in files:
