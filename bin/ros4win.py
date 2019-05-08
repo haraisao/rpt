@@ -127,7 +127,8 @@ def download_package_file(fname, path=""):
 
   if res.status_code == 200:
     file_name, size = get_attached_filename(res, file_name, path)
-    print(file_name)
+    if check_md5_file(res.headers['Content-MD5sum'], file_name):
+      return os.path.basename(file_name)
     #
     # save to file
     dl_chunk_size=1024
@@ -442,7 +443,7 @@ def untar(fname, to_dir, num=10, db=None):
     arc.close()
   except:
     print(fname,": Fail to extract...              ")
-    traceback.print_exc()
+    #traceback.print_exc()
     try:
       arc.close()
     except:
