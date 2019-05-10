@@ -1,3 +1,3 @@
 __pkg__/
 ros_pkg/
-bin/__pycache__/*
+bin/__pycache__/*.pyc

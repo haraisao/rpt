@@ -7,8 +7,6 @@ import ros4win as r4w
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 cmds=[]
 
-
-
 #
 # 
 def getArgCwd(n):
@@ -143,7 +141,7 @@ def update():
     res=[]
     for x in lst:
       if lst_pkg[x] != lst[x]:
-        res.append(x)
+        res.append(x.split(',')[0])
     if len(res):
       print("[%s]" % ",".join(res))
       print(" %d updates..." % len(res))
@@ -162,7 +160,7 @@ def upgrade():
   res=[]
   for x in lst:
     if lst_pkg[x] != lst[x]:
-      res.append(x)
+      res.append(x.split(',')[0])
   if len(res) == 0 :
     print("No upgradable package")
     return
@@ -179,9 +177,14 @@ def upgrade():
       f=r4w.download_package_file(name, path)
       files.append(f)
 
+    for name in res:
+      print("remove package", name)
+      r4w.remove_pkg_file_all(name, drv)
+
     for f in files:
       fname=path+"\\"+f
       print("Update file", fname)
+
       r4w.install_package(fname, drv, False, True)
 cmds.append(upgrade)
 #
@@ -194,14 +197,16 @@ cmds.append(remove)
 
 #
 #
-def update_cache(pkg_dir="__pkg__"):
+def update_cache(pkg_dir=None):
+  if pkg_dir is None:  pkg_dir=os.path.dirname(__file__)+"\\__pkg__"
   r4w.download_package_file("list", pkg_dir)
   #print("....Upated")
 #cmds.append(update_cache)
 
 #
 #
-def download(name="", path="ros_pkg"):
+def download(name="", path=None):
+  if path is None:  path =os.path.dirname(__file__)+"\\ros_pkg"
   if not name : name=sys.argv[2]
   if len(sys.argv) > 3:  path=sys.argv[3]
   return r4w.download_package_file(name, path)
@@ -209,7 +214,8 @@ def download(name="", path="ros_pkg"):
 
 #
 #
-def download_all(path="ros_pkg"):
+def download_all(path=None):
+  if path is None:  path =os.path.dirname(__file__)+"\\ros_pkg"
   name=sys.argv[2]
   if len(sys.argv) > 3:  path=sys.argv[3]
 
@@ -235,7 +241,8 @@ def download_all(path="ros_pkg"):
 
 #
 #
-def install(path="ros_pkg"):
+def install(path=None):
+  if path is None:  path =os.path.dirname(__file__)+"\\ros_pkg"
   files=download_all(path)
   print("Finish downloading files....")
   n=len(files)
@@ -287,7 +294,7 @@ def get_pkg(path=""):
 
 #
 #
-def search(path=""):
+def search():
   name=sys.argv[2]
   lst=r4w.load_pkg_list()
   try:
