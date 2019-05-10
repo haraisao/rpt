@@ -156,9 +156,14 @@ def upgrade():
       f=r4w.download_package_file(name, path)
       files.append(f)
 
+    for name in res:
+      print("remove package", name)
+      r4w.remove_pkg_file_all(name, drv)
+
     for f in files:
       fname=path+"\\"+f
       print("Update file", fname)
+
       r4w.install_package(fname, drv, False, True)
 cmds.append(upgrade)
 #
