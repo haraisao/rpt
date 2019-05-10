@@ -61,6 +61,27 @@ def installed_files():
     print(x)
 #cmds.append(installed_files)
 
+
+#
+#
+def check():
+  drv = getArgCwd(3)
+  pname=sys.argv[2]
+  try:
+    lst=package_list(drv)
+    res = pname in lst
+    if res:
+      print(pname, "OK")
+    else:
+      print("--")
+    return res
+  except:
+    print("No package")
+    return False
+cmds.append(check)
+
+
+
 #
 #
 def pkg_dep():
