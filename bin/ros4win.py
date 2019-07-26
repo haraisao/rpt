@@ -124,7 +124,6 @@ def download_package_file(fname, path=""):
   file_name=os.path.basename(fname)
   url="%spkg_download.cgi?name=%s" % (PKG_REPO_BASE, fname)
   res=requests.get(url, stream=True)
-
   if res.status_code == 200:
     file_name, size = get_attached_filename(res, file_name, path)
     if check_md5_file(res.headers['Content-MD5sum'], file_name):
@@ -479,6 +478,17 @@ def pkgname_to_file(p, pkgpath="__pkg__/pkgs.yaml"):
     if p in pname:  return os.path.basename(x['filename'])
   return None
 
+
+#
+def get_filename(name):
+  lst=load_pkg_list()
+  try:
+    for x in lst:
+      if name == lst[x]['package']:
+        return lst[x]['filename']
+  except:
+    return None
+
 #
 #  install package file
 def install_package(fname, dname, flag=False, verbose=False):
@@ -506,7 +516,10 @@ def install_package(fname, dname, flag=False, verbose=False):
         untar(fname, to_pkgdir)
     else:
       if flag or not check_pkg_installed(fname, to_pkgdir):
-        untar(fname, to_libdir, 10, PKG_DB)
+        if 'opt_local' in get_filename(ff):
+          untar(fname, to_pkgdir, 10, PKG_DB)
+        else: 
+          untar(fname, to_libdir, 10, PKG_DB)
       else:
         if verbose :
           print("Skip install", ff)

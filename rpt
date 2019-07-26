@@ -233,7 +233,7 @@ def download_all(path=None):
       y=int(count/n * 100)
       print("Download: %s  [%d]%%\r" % (v, y), end="", flush=True)
     except:
-      #print("[", x, "]                   ", flush=True)
+      print("ERROR: [", x, "]                   ", flush=True)
       pass
     count += 1
   return files
