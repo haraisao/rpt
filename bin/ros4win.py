@@ -483,6 +483,7 @@ def pkgname_to_file(p, pkgpath="__pkg__/pkgs.yaml"):
 #  install package file
 def install_package(fname, dname, flag=False, verbose=False):
   to_libdir=dname+"\\local"
+  to_optlibdir=dname+"\\opt\\local"
   to_pkgdir=dname+"\\opt"
 
   if not os.path.exists(to_libdir) :
