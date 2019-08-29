@@ -1,3 +1,7 @@
 __pkg__/
 ros_pkg/
 bin/__pycache__/*.pyc
+tmp/
+logback.xml
+ros_pkg_old/
+cmake*/
