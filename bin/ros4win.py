@@ -23,7 +23,7 @@ import ros4win as r4w
 colorama.init(autoreset=True)
 
 PKG_LIST=['ros_base', 'ros_desktop', 'control', 'plan', 'navigation', 'robot']
-LIB_LIST=['local', 'local-contrib', 'python', 'setup']
+LIB_LIST=['local', 'local-contrib', 'python', 'setup', 'rtm']
 PKG_BASE_DIR="ros_pkg/"
 PKG_PREFIX="ros-melodic-"
 PKG_EXT=".tgz"
