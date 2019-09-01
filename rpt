@@ -140,8 +140,11 @@ def update():
 
     res=[]
     for x in lst:
-      if lst_pkg[x] != lst[x]:
-        res.append(x.split(',')[0])
+      try:
+        if lst_pkg[x] != lst[x]:
+          res.append(x.split(',')[0])
+      except:
+        print("== ERROR: no such package [",x, "]")
     if len(res):
       print("[%s]" % ",".join(res))
       print(" %d updates..." % len(res))
