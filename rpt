@@ -3,6 +3,7 @@
 import sys,os
 import signal
 import ros4win as r4w
+import traceback
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 cmds=[]
@@ -107,11 +108,14 @@ def pkgname():
 #
 def package_list(drv):
   dbname=r4w.default_pkgmgr_db(drv)
-  res=r4w.select_pkg_data('all', dbname)
-  lst={}
-  for x in res:
-    lst[x[0]]=x[4]
-  return lst
+  try:
+    res=r4w.select_pkg_data('all', dbname)
+    lst={}
+    for x in res:
+      lst[x[0]]=x[4]
+    return lst
+  except:
+    return []
 
 #
 #
@@ -137,7 +141,7 @@ def update():
   try:
     lst=package_list(drv)
     lst_pkg=r4w.load_pkg_hash()
-
+    print(lst)
     res=[]
     for x in lst:
       try:
@@ -151,6 +155,7 @@ def update():
     else:
       print("No update")
   except:
+    traceback.print_exc()
     print("Update package list")
 cmds.append(update)
 
