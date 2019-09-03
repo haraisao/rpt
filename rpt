@@ -141,7 +141,7 @@ def update():
   try:
     lst=package_list(drv)
     lst_pkg=r4w.load_pkg_hash()
-    print(lst)
+    #print(lst)
     res=[]
     for x in lst:
       try:
