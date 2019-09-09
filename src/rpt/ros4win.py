@@ -18,7 +18,6 @@ import yaml
 import re
 import colorama
 from colorama import Fore, Back, Style
-import ros4win as r4w
 
 colorama.init(autoreset=True)
 

@@ -275,6 +275,7 @@ int run(int argc, char **argv, int is_gui) {
     char python[256];   /* python executable's filename*/
     char *pyopt;        /* Python option */
     char script[256];   /* the script's filename */
+    char scriptz[256];   /* the script's filename */
 
     int scriptf;        /* file descriptor for script file */
 
@@ -295,10 +296,15 @@ int run(int argc, char **argv, int is_gui) {
 
     scriptf = open(script, O_RDONLY);
     if (scriptf == -1) {
+        strcpy(scriptz, script);
         strcat(script, (GUI ? "-script.pyw" : "-script.py"));
         scriptf = open(script, O_RDONLY);
         if (scriptf == -1) {
-            return fail("Cannot open %s\n", script);
+            strcat(scriptz, ".pyz");
+            scriptf = open(scriptz, O_RDONLY);
+            if (scriptf == -1) {
+                return fail("Cannot open %s\n", script);
+            }
         }
     }
     end = python + read(scriptf, python, sizeof(python));

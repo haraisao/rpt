@@ -49,6 +49,16 @@ def installed_pkgs():
     print(x)
 #cmds.append(installed_pkgs)
 
+def getRptDir():
+  if 'RPT_HOME' in os.environ and os.environ['RPT_HOME']:
+    return os.environ['RPT_HOME']
+  dirname=os.path.dirname(os.path.abspath(__file__))
+  seq=dirname.split(os.path.sep)
+  if (os.path.splitext(seq.pop())[1] == ".pyz" ):
+    return os.path.sep.join(seq)
+  else:
+    return dirname
+
 #
 #
 def installed_files():
@@ -140,7 +150,7 @@ def update():
   update_cache()
   try:
     lst=package_list(drv)
-    lst_pkg=r4w.load_pkg_hash()
+    lst_pkg=r4w.load_pkg_hash(getRptDir()+"\\__pkg__\\pkgs.yaml")
     #print(lst)
     res=[]
     for x in lst:
@@ -163,7 +173,7 @@ cmds.append(update)
 def upgrade():
   drv = getArgCwd(2)
   lst=package_list(drv)
-  lst_pkg=r4w.load_pkg_hash()
+  lst_pkg=r4w.load_pkg_hash(getRptDir()+"\\__pkg__\\pkgs.yaml")
 
   res=[]
   for x in lst:
@@ -206,15 +216,13 @@ cmds.append(remove)
 #
 #
 def update_cache(pkg_dir=None):
-  if pkg_dir is None:  pkg_dir=os.path.dirname(__file__)+"\\__pkg__"
+  if pkg_dir is None:  pkg_dir=getRptDir()+"\\__pkg__"
   r4w.download_package_file("list", pkg_dir)
-  #print("....Upated")
-#cmds.append(update_cache)
 
 #
 #
 def download(name="", path=None):
-  if path is None:  path =os.path.dirname(__file__)+"\\ros_pkg"
+  if path is None:  path = getRptFir()+"\\ros_pkg"
   if not name : name=sys.argv[2]
   if len(sys.argv) > 3:  path=sys.argv[3]
   return r4w.download_package_file(name, path)
@@ -223,7 +231,7 @@ def download(name="", path=None):
 #
 #
 def download_all(path=None):
-  if path is None:  path =os.path.dirname(__file__)+"\\ros_pkg"
+  if path is None:  path = getRptFir()+"\\ros_pkg"
   name=sys.argv[2]
   if len(sys.argv) > 3:  path=sys.argv[3]
 
@@ -250,7 +258,7 @@ def download_all(path=None):
 #
 #
 def install(path=None):
-  if path is None:  path =os.path.dirname(__file__)+"\\ros_pkg"
+  if path is None:  path = getRptFir()+"\\ros_pkg"
   files=download_all(path)
   print("Finish downloading files....")
   n=len(files)
@@ -304,7 +312,7 @@ def get_pkg(path=""):
 #
 def search():
   name=sys.argv[2]
-  lst=r4w.load_pkg_list()
+  lst=r4w.load_pkg_list(getRptDir()+"\\__pkg__\\pkgs.yaml")
   try:
     for x in lst:
       if name in x or name in lst[x]['description']:
@@ -322,11 +330,8 @@ usage="Usage: %s cmd [arg1 arg2 ...]\n" % os.path.basename(sys.argv[0])
 usage+= "   cmd: "+", ".join(cmds_str)
 
 
-##############################
-#  M A I N
-#
-import traceback
-if __name__ == '__main__':
+
+def main():
   if len(sys.argv) < 2:
     print(usage)
     sys.exit()
@@ -342,4 +347,11 @@ if __name__ == '__main__':
   except:
     traceback.print_exc()
     print("Error...")
+
+##############################
+#  M A I N
+#
+
+if __name__ == '__main__':
+  main()
 
