@@ -51,6 +51,18 @@ def getMonDots(n):
 def getMonDots2(n):
   return _mon_dot2[ n % 8 ]
 
+#
+#
+def getRptDir():
+  if 'RPT_HOME' in os.environ and os.environ['RPT_HOME']:
+    return os.environ['RPT_HOME']
+  dirname=os.path.dirname(os.path.abspath(__file__))
+  seq=dirname.split(os.path.sep)
+  if (os.path.splitext(seq.pop())[1] == ".pyz" ):
+    return os.path.sep.join(seq)
+  else:
+    return dirname
+
 
 #######
 # Remote
@@ -413,7 +425,7 @@ def untar(fname, to_dir, num=10, db=None):
   signal.signal(signal.SIGINT, signal.SIG_DFL)
   try:
     arc=tarfile.open(fname)
-    pkgname=file_to_pkgname(fname)
+    pkgname=file_to_pkgname(fname, getRptDir()+"\\__pkg__\\pkgs.yaml")
     if db:
       dbname=get_dbname(to_dir, db)
       if not os.path.exists(os.path.dirname(dbname)):
@@ -451,7 +463,7 @@ def untar(fname, to_dir, num=10, db=None):
 #
 def check_pkg_installed(fname, to_pkgdir):
   try:
-    name=file_to_pkgname(os.path.basename(fname))
+    name=file_to_pkgname(os.path.basename(fname), getRptDir()+"\\__pkg__\\pkgs.yaml")
     dbname=get_dbname(to_pkgdir, PKG_DB)
     data=select_pkg_data(name, dbname)
     if data :
@@ -480,7 +492,7 @@ def pkgname_to_file(p, pkgpath="__pkg__/pkgs.yaml"):
 
 #
 def get_filename(name):
-  lst=load_pkg_list()
+  lst=load_pkg_list(getRptDir()+"\\__pkg__\\pkgs.yaml")
   try:
     for x in lst:
       if name == lst[x]['package']:
@@ -502,7 +514,7 @@ def install_package(fname, dname, flag=False, verbose=False):
 
   signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-  ff=file_to_pkgname(os.path.basename(fname))
+  ff=file_to_pkgname(os.path.basename(fname), getRptDir()+"\\__pkg__\\pkgs.yaml")
 
   if PKG_PREFIX in fname:
     if flag or not check_pkg_installed(fname, to_pkgdir):
@@ -618,7 +630,7 @@ def get_pkg_data(fname):
         data=mkInfo(pname, ver, fname, desc, license, maintainer, deps)
         return data
       else:
-        pname=file_to_pkg_name(fname)
+        pname=file_to_pkg_name(fname, getRptDir()+"\\__pkg__\\pkgs.yaml")
         desc=fname
         license=""
         maintainer=""
@@ -687,7 +699,7 @@ def get_depend(pname, deps, info):
 
 def get_depends(pname):
   deps=[]
-  info = load_pkg_list()
+  info = load_pkg_list(getRptDir()+"\\__pkg__\\pkgs.yaml")
   get_depend(pname, deps, info)
   deps.append(pname)
   deps.sort()
@@ -706,7 +718,7 @@ def get_dep_lib(pname):
   return pkgs, libs
 
 def get_depend_pkgs(name):
-  info=load_pkg_list()
+  info=load_pkg_list(getRptDir()+"\\__pkg__\\pkgs.yaml")
   res=[]
   for x in list(info.keys()):
     if name  in info[x]['depend']:

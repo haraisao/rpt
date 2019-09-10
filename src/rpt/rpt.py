@@ -222,7 +222,7 @@ def update_cache(pkg_dir=None):
 #
 #
 def download(name="", path=None):
-  if path is None:  path = getRptFir()+"\\ros_pkg"
+  if path is None:  path = getRptDir()+"\\ros_pkg"
   if not name : name=sys.argv[2]
   if len(sys.argv) > 3:  path=sys.argv[3]
   return r4w.download_package_file(name, path)
@@ -231,7 +231,7 @@ def download(name="", path=None):
 #
 #
 def download_all(path=None):
-  if path is None:  path = getRptFir()+"\\ros_pkg"
+  if path is None:  path = getRptDir()+"\\ros_pkg"
   name=sys.argv[2]
   if len(sys.argv) > 3:  path=sys.argv[3]
 
@@ -258,7 +258,7 @@ def download_all(path=None):
 #
 #
 def install(path=None):
-  if path is None:  path = getRptFir()+"\\ros_pkg"
+  if path is None:  path = getRptDir()+"\\ros_pkg"
   files=download_all(path)
   print("Finish downloading files....")
   n=len(files)
@@ -267,7 +267,7 @@ def install(path=None):
   count=1
 
   for fname in files:
-    ff=r4w.file_to_pkgname(fname)
+    ff=r4w.file_to_pkgname(fname, getRptDir()+"\\__pkg__\\pkgs.yaml")
     v=r4w.getMonChar(count)
     y=int(count/n * 100)
     if not r4w.check_pkg_installed(fname, to_pkgdir):
