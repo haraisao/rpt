@@ -190,7 +190,7 @@ def upgrade():
   else:
     print("Start upgrade packages")
     files=[]
-    path="ros_pkg"
+    path= getRptDir()+"\\ros_pkg"
     for name in res:
       f=r4w.download_package_file(name, path)
       files.append(f)
