@@ -270,6 +270,46 @@ char* join_executable_and_args(char *executable, char **args, int argc)
     return cmdline;
 }
 
+
+int is_exist(char *fname){
+    int scriptf;
+    if ((scriptf = open(fname, O_RDONLY)) == -1) return 0;
+    close(scriptf);
+    return 1;
+}
+
+
+char *find_script(char *script){
+    char drive[_MAX_DRIVE], dir[_MAX_DIR], fname[_MAX_FNAME], ext0[_MAX_EXT];
+    char filename[256];
+    int i, j;
+    char *path[]={"", "scripts\\", NULL};
+#if GUI
+    char *ext[] = {"", "-script.pyw", ".pyz", ".pyw", NULL};
+#else 
+    char *ext[] = {"", "-script.py", ".pyz", ".py", NULL};
+#endif
+    _splitpath(script, drive, dir, fname, ext0);
+
+    j=0;
+    while(1){
+        if (path[j] == NULL) break;
+        i=0;
+        while (1){
+            if (ext[i] == NULL) break;
+            memset(filename, 0, 256);
+            strcpy(filename, drive);
+            strcat(filename, dir);
+            strcat(filename, path[j]);
+            strcat(filename, fname);
+            strcat(filename, ext[i++]);
+            if(is_exist(filename)) return _strdup(filename);
+        }
+        j++;
+    }
+    return NULL;
+}
+
 int run(int argc, char **argv, int is_gui) {
 
     char python[256];   /* python executable's filename*/
@@ -291,10 +331,16 @@ int run(int argc, char **argv, int is_gui) {
         *end-- = '\0';
     *end-- = '\0';
 
-
-    /* figure out the target python executable */
-
+    char *script_file=find_script(script);
+    if (script_file == NULL){
+        return fail("Cannot open %s\n", script);
+    }
+    strcpy(script, script_file);
+    free(script_file);
     scriptf = open(script, O_RDONLY);
+    /* figure out the target python executable */
+#if 0
+    scriptf = open(script, O_RDONLY); // No ext
     if (scriptf == -1) {
         strcpy(scriptz, script);
         strcat(script, (GUI ? "-script.pyw" : "-script.py"));
@@ -307,8 +353,11 @@ int run(int argc, char **argv, int is_gui) {
             }
         }
     }
+#endif
+
     end = python + read(scriptf, python, sizeof(python));
     close(scriptf);
+
 
     ptr = python-1;
     while(++ptr < end && *ptr && *ptr!='\n' && *ptr!='\r') {;}
